@@ -1,4 +1,4 @@
-name: CI - Build and Test
+name: CI - Build, Test & SonarCloud
 
 on:
   push:
@@ -9,14 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: src
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -25,23 +25,27 @@ jobs:
     - name: Install SonarScanner
       run: dotnet tool install --global dotnet-sonarscanner
 
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
     - name: Begin SonarCloud analysis
       run: |
         dotnet sonarscanner begin \
-        /k:"shopisel_list-service" \
-        /o:"shopisel" \
-        /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
-        /d:sonar.host.url="https://sonarcloud.io" \
-        /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
-        
-    - name: Restore dependencies
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build --no-restore
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+          /k:"shopisel_list-service" \
+          /o:"shopisel" \
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.opencover.xml"
+
+    - name: Test with coverage
+      run: |
+        dotnet test --no-build --verbosity normal \
+          /p:CollectCoverage=true \
+          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
+          /p:CoverletOutputFormat=opencover
 
     - name: Publish
       run: dotnet publish -c Release -o ./publish
@@ -54,4 +58,3 @@ jobs:
 
     - name: End SonarCloud analysis
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      
