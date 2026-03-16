@@ -5,7 +5,7 @@ info:
   description: Pedidos relacionados com a lista de compras.
 
 servers:
-  - url: http://localhost:5000/lists
+  - url: http://localhost:5000
 
 paths:
   /lists:
@@ -29,7 +29,7 @@ paths:
                 - id: "list_002"
                   name: "Compras de Festa"
                   items: []
-
+                  
     post:
       summary: Criar nova lista
       tags: [List]
