@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  title: Shopisel API List Service
+  version: 1.0.0
+  description: Pedidos relacionados com produtos.
+
+servers:
+  - url: http://localhost:5000
+
+
+paths:
+  /products:
+    get:
+      summary: Obter detalhes de múltiplos produtos
+      description: |
+        Retorna uma lista de produtos baseada nos IDs fornecidos. 
+        Útil para carregar os detalhes após obter os IDs de uma lista de compras.
+      tags: [Product]
+      parameters:
+        - name: ids
+          in: query
+          description: Lista de IDs de produtos separados por vírgula
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["prod_1", "prod_2", "prod_3"]
+      responses:
+        '200':
+          description: Lista de produtos encontrados
+          content:
+            application/json:
+              example:
+                - id: "prod_1"
+                  name: "Leite UHT"
+                  brand: "Mimosa"
+                  price: 0.85
+                - id: "prod_2"
+                  name: "Cereais"
+                  brand: "Nestlé"
+                  price: 3.50
+        '400':
+          description: Formato de IDs inválido
