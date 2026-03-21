@@ -60,9 +60,10 @@ jobs:
 
     # publicar em GitHub Packages
     - name: Publish to GitHub Packages
-      run: dotnet nuget push "./nupkg/*.nupkg" \
-        --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-        --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        dotnet nuget push ./nupkg/*.nupkg \
+         --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+         --api-key ${{ secrets.GITHUB_TOKEN }}
 
     - name: End SonarCloud analysis
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
