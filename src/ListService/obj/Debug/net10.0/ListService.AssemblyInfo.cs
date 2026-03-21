@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("List service microservice")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0b00c846ed00bb51950b204afbb636ced7b89ff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69b9f1e9df5c88070705866cabb5ac8498049b45")]
 [assembly: System.Reflection.AssemblyProductAttribute("ListService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ListService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
