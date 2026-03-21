@@ -1,13 +1,17 @@
-name: CI - Build, Test & SonarCloud
+name: CI - Main (Build, Test, Sonar & Package)
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-  build:
+  build-test-sonar:
     runs-on: ubuntu-latest
 
     defaults:
@@ -28,9 +32,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
-
     - name: Begin SonarCloud analysis
       run: |
         dotnet sonarscanner begin \
@@ -39,6 +40,9 @@ jobs:
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.opencover.xml"
+
+    - name: Build
+      run: dotnet build --no-restore
 
     - name: Test with coverage
       run: |
@@ -50,12 +54,15 @@ jobs:
     - name: Publish
       run: dotnet publish -c Release -o ./publish
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: microservice-build
-        path: src/publish
+    # criar package NuGet
+    - name: Pack NuGet package
+      run: dotnet pack -c Release -o ./nupkg
+
+    # publicar em GitHub Packages
+    - name: Publish to GitHub Packages
+      run: dotnet nuget push "./nupkg/*.nupkg" \
+        --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+        --api-key ${{ secrets.GITHUB_TOKEN }}
 
     - name: End SonarCloud analysis
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      

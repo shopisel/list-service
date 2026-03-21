@@ -429,17 +429,17 @@
           "build/net8.0/xunit.runner.visualstudio.props": {}
         }
       },
-      "ListService/1.0.0": {
+      "shopisel-list-service/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "10.0.5"
         },
         "compile": {
-          "bin/placeholder/ListService.dll": {}
+          "bin/placeholder/shopisel-list-service.dll": {}
         },
         "runtime": {
-          "bin/placeholder/ListService.dll": {}
+          "bin/placeholder/shopisel-list-service.dll": {}
         },
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
@@ -991,7 +991,7 @@
         "xunit.runner.visualstudio.nuspec"
       ]
     },
-    "ListService/1.0.0": {
+    "shopisel-list-service/1.0.0": {
       "type": "project",
       "path": "../ListService/ListService.csproj",
       "msbuildProject": "../ListService/ListService.csproj"
@@ -999,9 +999,9 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "ListService >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.14.1",
       "coverlet.collector >= 6.0.4",
+      "shopisel-list-service >= 1.0.0",
       "xunit >= 2.9.3",
       "xunit.runner.visualstudio >= 3.1.4"
     ]
@@ -1012,11 +1012,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Projeto\\demo-repository\\src\\ListService.Tests\\ListService.Tests.csproj",
+      "projectUniqueName": "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj",
       "projectName": "ListService.Tests",
-      "projectPath": "c:\\Projeto\\demo-repository\\src\\ListService.Tests\\ListService.Tests.csproj",
+      "projectPath": "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj",
       "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
-      "outputPath": "c:\\Projeto\\demo-repository\\src\\ListService.Tests\\obj\\",
+      "outputPath": "C:\\Projeto\\list-service\\src\\ListService.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -1031,8 +1031,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj": {
-              "projectPath": "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj"
+            "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj": {
+              "projectPath": "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj"
             }
           }
         }

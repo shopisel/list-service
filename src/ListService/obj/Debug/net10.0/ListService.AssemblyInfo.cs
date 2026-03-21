@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("ListService")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("shopisel")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("List service microservice")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88b1bee919d694fabe87621b19e2542ae813a723")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0b00c846ed00bb51950b204afbb636ced7b89ff")]
 [assembly: System.Reflection.AssemblyProductAttribute("ListService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ListService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

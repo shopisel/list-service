@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l45hE5Ck7aE=",
+  "dgSpecHash": "cls74bd1TcY=",
   "success": true,
-  "projectFilePath": "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj",
+  "projectFilePath": "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Utilizador\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.5\\microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",
     "C:\\Users\\Utilizador\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"

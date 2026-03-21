@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "B6q2AZUKdb4=",
+  "dgSpecHash": "xJvf9pI9IiE=",
   "success": true,
-  "projectFilePath": "C:\\Projeto\\demo-repository\\src\\ListService.Tests\\ListService.Tests.csproj",
+  "projectFilePath": "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Utilizador\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
     "C:\\Users\\Utilizador\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.5\\microsoft.aspnetcore.openapi.10.0.5.nupkg.sha512",

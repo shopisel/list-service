@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projeto\\demo-repository\\src\\ListService.Tests\\ListService.Tests.csproj": {}
+    "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Projeto\\demo-repository\\src\\ListService.Tests\\ListService.Tests.csproj": {
+    "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projeto\\demo-repository\\src\\ListService.Tests\\ListService.Tests.csproj",
+        "projectUniqueName": "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj",
         "projectName": "ListService.Tests",
-        "projectPath": "C:\\Projeto\\demo-repository\\src\\ListService.Tests\\ListService.Tests.csproj",
+        "projectPath": "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj",
         "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
-        "outputPath": "C:\\Projeto\\demo-repository\\src\\ListService.Tests\\obj\\",
+        "outputPath": "C:\\Projeto\\list-service\\src\\ListService.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -26,8 +26,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj": {
-                "projectPath": "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj"
+              "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj": {
+                "projectPath": "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj"
               }
             }
           }
@@ -359,14 +359,14 @@
         }
       }
     },
-    "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj": {
+    "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj",
-        "projectName": "ListService",
-        "projectPath": "C:\\Projeto\\demo-repository\\src\\ListService\\ListService.csproj",
+        "projectUniqueName": "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj",
+        "projectName": "shopisel-list-service",
+        "projectPath": "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj",
         "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
-        "outputPath": "C:\\Projeto\\demo-repository\\src\\ListService\\obj\\",
+        "outputPath": "C:\\Projeto\\list-service\\src\\ListService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config"

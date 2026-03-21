@@ -4,6 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <PackageId>shopisel-list-service</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>shopisel</Authors>
+    <Description>List service microservice</Description>
+
   </PropertyGroup>
 
   <ItemGroup>
