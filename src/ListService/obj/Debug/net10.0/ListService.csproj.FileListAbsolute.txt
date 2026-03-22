@@ -54,7 +54,6 @@ C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\ListService.sourcelink
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
-C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\scopedcss\bundle\ListService.styles.css
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\staticwebassets.build.json
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\staticwebassets.development.json
@@ -66,3 +65,4 @@ C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\refint\ListService.dll
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\ListService.pdb
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\ListService.genruntimeconfig.cache
 C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\ref\ListService.dll
+C:\Projeto\list-service\src\ListService\obj\Debug\net10.0\scopedcss\bundle\shopisel-list-service.styles.css
