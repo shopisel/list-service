@@ -1,10 +1,19 @@
-@ListService_HostAddress = http://localhost:5051
+@ListService_HostAddress = https://list-service-9503.onrender.com
 
 GET {{ListService_HostAddress}}/lists
 Accept: application/json
 
 ###
 
+POST {{ListService_HostAddress}}/lists
+Content-Type: application/json
+
+{
+  "name": "Compras Semanais",
+  "items": []
+}
+
+###
 POST {{ListService_HostAddress}}/lists
 Content-Type: application/json
 

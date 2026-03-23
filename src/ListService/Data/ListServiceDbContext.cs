@@ -26,7 +26,7 @@ public class ListServiceDbContext(DbContextOptions<ListServiceDbContext> options
 
             entity.Property(list => list.CreatedAt)
                 .HasColumnName("created_at")
-                .HasColumnType("timestamp");
+                .HasColumnType("timestamp with time zone");
 
             entity.HasMany(list => list.Items)
                 .WithOne(item => item.List)
