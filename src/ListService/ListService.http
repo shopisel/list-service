@@ -1,6 +1,49 @@
 @ListService_HostAddress = http://localhost:5051
 
-GET {{ListService_HostAddress}}/weatherforecast/
+GET {{ListService_HostAddress}}/lists
 Accept: application/json
+
+###
+
+POST {{ListService_HostAddress}}/lists
+Content-Type: application/json
+
+{
+  "name": "Compras Semanais",
+  "items": [
+    {
+      "productId": "prod_1",
+      "checked": false
+    },
+    {
+      "productId": "prod_2",
+      "checked": true
+    }
+  ]
+}
+
+###
+
+GET {{ListService_HostAddress}}/lists/list_123
+Accept: application/json
+
+###
+
+PUT {{ListService_HostAddress}}/lists/list_123
+Content-Type: application/json
+
+{
+  "name": "Compras Semanais Atualizada",
+  "items": [
+    {
+      "productId": "prod_1",
+      "checked": true
+    }
+  ]
+}
+
+###
+
+DELETE {{ListService_HostAddress}}/lists/list_123
 
 ###

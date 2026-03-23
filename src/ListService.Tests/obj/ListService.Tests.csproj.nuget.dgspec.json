@@ -10,11 +10,12 @@
         "projectUniqueName": "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj",
         "projectName": "ListService.Tests",
         "projectPath": "C:\\Projeto\\list-service\\src\\ListService.Tests\\ListService.Tests.csproj",
-        "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
+        "packagesPath": "C:\\Projeto\\list-service\\.nuget\\packages",
         "outputPath": "C:\\Projeto\\list-service\\src\\ListService.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Projeto\\list-service\\NuGet.Config",
+          "C:\\Projeto\\list-service\\.appdata\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -48,6 +49,14 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.14.1, )"
@@ -365,11 +374,12 @@
         "projectUniqueName": "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj",
         "projectName": "shopisel-list-service",
         "projectPath": "C:\\Projeto\\list-service\\src\\ListService\\ListService.csproj",
-        "packagesPath": "C:\\Users\\Utilizador\\.nuget\\packages\\",
+        "packagesPath": "C:\\Projeto\\list-service\\.nuget\\packages",
         "outputPath": "C:\\Projeto\\list-service\\src\\ListService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Utilizador\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Projeto\\list-service\\NuGet.Config",
+          "C:\\Projeto\\list-service\\.appdata\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -402,6 +412,20 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[10.0.0, )"
             }
           },
           "imports": [
