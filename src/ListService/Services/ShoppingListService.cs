@@ -1,107 +1,16 @@
 using ListService.Contracts;
 using ListService.Data;
 using ListService.Data.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace ListService.Services;
 
-public class ShoppingListService : IShoppingListService
+public partial class ShoppingListService : IShoppingListService
 {
     private readonly ListServiceDbContext _dbContext;
 
     public ShoppingListService(ListServiceDbContext dbContext)
     {
         _dbContext = dbContext;
-    }
-
-    public async Task<IEnumerable<ListResponse>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        var result = await _dbContext.Lists
-            .AsNoTracking()
-            .Include(list => list.Items)
-            .OrderByDescending(list => list.CreatedAt)
-            .ToListAsync(cancellationToken);
-
-        return result.Select(MapToResponse);
-    }
-
-    public async Task<ListResponse?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
-    {
-        var list = await _dbContext.Lists
-            .AsNoTracking()
-            .Include(currentList => currentList.Items)
-            .FirstOrDefaultAsync(currentList => currentList.Id == id, cancellationToken);
-
-        return list is null ? null : MapToResponse(list);
-    }
-
-    public async Task<ListResponse> CreateAsync(CreateListRequest request, CancellationToken cancellationToken = default)
-    {
-        if (string.IsNullOrWhiteSpace(request.Name))
-        {
-            throw new ArgumentException("The list name is required.", nameof(request));
-        }
-
-        var shoppingList = new ShoppingListEntity
-        {
-            Id = GenerateListId(),
-            Name = request.Name.Trim(),
-            CreatedAt = DateTime.UtcNow,
-            Items = MapItems(request.Items)
-        };
-
-        _dbContext.Lists.Add(shoppingList);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return MapToResponse(shoppingList);
-    }
-
-    public async Task<ListResponse?> UpdateAsync(string id, UpdateListRequest request, CancellationToken cancellationToken = default)
-    {
-        var shoppingList = await _dbContext.Lists
-            .Include(list => list.Items)
-            .FirstOrDefaultAsync(list => list.Id == id, cancellationToken);
-
-        if (shoppingList is null)
-        {
-            return null; // Not found
-        }
-
-        if (request.Name is not null)
-        {
-            if (string.IsNullOrWhiteSpace(request.Name))
-            {
-                throw new ArgumentException("The list name cannot be empty.", nameof(request));
-            }
-
-            shoppingList.Name = request.Name.Trim();
-        }
-
-        if (request.Items is not null)
-        {
-            _dbContext.Items.RemoveRange(shoppingList.Items);
-            shoppingList.Items = MapItems(request.Items);
-        }
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return MapToResponse(shoppingList);
-    }
-
-    public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default)
-    {
-        var shoppingList = await _dbContext.Lists
-            .FirstOrDefaultAsync(list => list.Id == id, cancellationToken);
-
-        if (shoppingList is null)
-        {
-            return false;
-        }
-
-        _dbContext.Lists.Remove(shoppingList);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return true;
     }
 
     private static ListResponse MapToResponse(ShoppingListEntity entity)
