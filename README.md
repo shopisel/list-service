@@ -1,4 +1,4 @@
-# list-service
+# List Service
 
 The `list-service` is responsible for managing shopping lists in the Shopisel ecosystem.
 
