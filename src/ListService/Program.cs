@@ -44,6 +44,8 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        // Preserve original JWT claim names (e.g., "sub") instead of mapping to WS-Fed types.
+        options.MapInboundClaims = false;
         options.Authority = normalizedAuthority;
         options.RequireHttpsMetadata = keycloakRequireHttpsMetadata;
         options.TokenValidationParameters = new TokenValidationParameters

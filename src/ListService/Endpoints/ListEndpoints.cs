@@ -106,6 +106,7 @@ public static class ListEndpoints
 
         static string? GetOwnerId(ClaimsPrincipal principal)
         {
+            // "sub" may be remapped in some JWT handlers/environments.
             return principal.FindFirst("sub")?.Value;
         }
     }
