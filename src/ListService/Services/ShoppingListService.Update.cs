@@ -5,11 +5,15 @@ namespace ListService.Services;
 
 public partial class ShoppingListService
 {
-    public async Task<ListResponse?> UpdateAsync(string id, UpdateListRequest request, CancellationToken cancellationToken = default)
+    public async Task<ListResponse?> UpdateAsync(
+        string ownerId,
+        string id,
+        UpdateListRequest request,
+        CancellationToken cancellationToken = default)
     {
         var shoppingList = await _dbContext.Lists
             .Include(list => list.Items)
-            .FirstOrDefaultAsync(list => list.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(list => list.Id == id && list.OwnerId == ownerId, cancellationToken);
 
         if (shoppingList is null)
         {

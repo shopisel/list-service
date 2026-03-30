@@ -1,8 +1,6 @@
 # List Service
 
-The `list-service` is responsible for managing shopping lists in the Shopisel ecosystem.
-
-It provides the core functionality for creating, retrieving, updating, and deleting user shopping lists, while keeping track of the products inside each list and their checked state. This service is designed to act as the source of truth for list management and to support integration with other services, such as product-related endpoints.
+The `list-service` manages shopping lists in the Shopisel ecosystem.
 
 ## Responsibilities
 
@@ -11,37 +9,28 @@ It provides the core functionality for creating, retrieving, updating, and delet
 - Update list metadata and items
 - Mark products as checked or unchecked
 - Delete existing lists
-- Support loading product details for a set of product IDs
 
 ## API Overview
 
-Main list endpoints:
+Main list endpoints (all require bearer token):
 
-- `GET /lists` — return all shopping lists
-- `POST /lists` — create a new shopping list
-- `GET /lists/{listId}` — return a specific shopping list
-- `PUT /lists/{listId}` — update a list name, items, or checked state
-- `DELETE /lists/{listId}` — delete a shopping list
+- `GET /lists`
+- `POST /lists`
+- `GET /lists/{listId}`
+- `PUT /lists/{listId}`
+- `DELETE /lists/{listId}`
 
-Product helper endpoint:
+## Authentication (Keycloak)
 
-- `GET /products?ids=...` — fetch product details for multiple product IDs
+The API validates JWT bearer tokens issued by Keycloak.
 
-## Data Model
+Configuration keys:
 
-A shopping list includes:
+- `Keycloak:Authority` (example: `https://<keycloak-host>/realms/shopisel`)
+- `Keycloak:Audience` (expected `azp` claim, example: `shopisel-list-api`)
+- `Keycloak:RequireHttpsMetadata` (`true` in production)
 
-- `id`
-- `name`
-- `createdAt`
-- `items`
-
-Each item contains:
-
-- `productId`
-- `checked`
-
-This structure makes it possible to keep lists lightweight while delegating richer product information to a dedicated product-related flow.
+Each list is stored with `owner_id` using the JWT `sub` claim, and all `/lists` operations are filtered by owner.
 
 ## Project Structure
 
@@ -50,3 +39,4 @@ src/
 ├── ListService/
 ├── ListService.Tests/
 └── ListService.slnx
+```

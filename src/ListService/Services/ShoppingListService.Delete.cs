@@ -4,10 +4,10 @@ namespace ListService.Services;
 
 public partial class ShoppingListService
 {
-    public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(string ownerId, string id, CancellationToken cancellationToken = default)
     {
         var shoppingList = await _dbContext.Lists
-            .FirstOrDefaultAsync(list => list.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(list => list.Id == id && list.OwnerId == ownerId, cancellationToken);
 
         if (shoppingList is null)
         {

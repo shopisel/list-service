@@ -20,6 +20,11 @@ public class ListServiceDbContext(DbContextOptions<ListServiceDbContext> options
                 .HasColumnName("id")
                 .HasColumnType("varchar");
 
+            entity.Property(list => list.OwnerId)
+                .HasColumnName("owner_id")
+                .HasColumnType("varchar")
+                .IsRequired();
+
             entity.Property(list => list.Name)
                 .HasColumnName("name")
                 .HasColumnType("varchar");
@@ -32,6 +37,9 @@ public class ListServiceDbContext(DbContextOptions<ListServiceDbContext> options
                 .WithOne(item => item.List)
                 .HasForeignKey(item => item.ListId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(list => list.OwnerId)
+                .HasDatabaseName("IX_lists_owner_id");
         });
 
         modelBuilder.Entity<ShoppingListItemEntity>(entity =>

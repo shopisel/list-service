@@ -37,7 +37,15 @@ namespace ListService.Data.Migrations
                         .HasColumnType("varchar")
                         .HasColumnName("name");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("varchar")
+                        .HasColumnName("owner_id");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId")
+                        .HasDatabaseName("IX_lists_owner_id");
 
                     b.ToTable("lists", (string)null);
                 });

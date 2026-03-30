@@ -61,6 +61,35 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
         Assert.Equal(HttpStatusCode.NotFound, afterDeleteResponse.StatusCode);
     }
 
+    [Fact]
+    public async Task ListOwnerIsolation_OtherUserCannotAccessList()
+    {
+        var createRequest = new
+        {
+            name = "Lista Privada",
+            items = new[]
+            {
+                new { productId = "prod_10", @checked = false }
+            }
+        };
+
+        var createResponse = await _client.PostAsJsonAsync("/lists", createRequest);
+        Assert.Equal(HttpStatusCode.Created, createResponse.StatusCode);
+
+        var created = await createResponse.Content.ReadFromJsonAsync<ListResponse>();
+        Assert.NotNull(created);
+
+        using var otherUserClient = factory.CreateClient();
+        otherUserClient.DefaultRequestHeaders.Remove("X-Test-User");
+        otherUserClient.DefaultRequestHeaders.Add("X-Test-User", "other-user");
+
+        var otherUserGetResponse = await otherUserClient.GetAsync($"/lists/{created!.Id}");
+        Assert.Equal(HttpStatusCode.NotFound, otherUserGetResponse.StatusCode);
+
+        var otherUserDeleteResponse = await otherUserClient.DeleteAsync($"/lists/{created.Id}");
+        Assert.Equal(HttpStatusCode.NotFound, otherUserDeleteResponse.StatusCode);
+    }
+
     private sealed record ListItemResponse(string ProductId, bool Checked);
 
     private sealed record ListResponse(

@@ -5,7 +5,10 @@ namespace ListService.Services;
 
 public partial class ShoppingListService
 {
-    public async Task<ListResponse> CreateAsync(CreateListRequest request, CancellationToken cancellationToken = default)
+    public async Task<ListResponse> CreateAsync(
+        string ownerId,
+        CreateListRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(request.Name))
         {
@@ -15,6 +18,7 @@ public partial class ShoppingListService
         var shoppingList = new ShoppingListEntity
         {
             Id = GenerateListId(),
+            OwnerId = ownerId,
             Name = request.Name.Trim(),
             CreatedAt = DateTime.UtcNow,
             Items = MapItems(request.Items)
