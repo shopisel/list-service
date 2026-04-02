@@ -98,12 +98,40 @@ paths:
 
 components:
   schemas:
-    ListItem:
+    ListItemRequest:
       type: object
-      required: [productId, checked]
+      required: [productId, storeId, quantity, price, checked]
       properties:
         productId:
           type: string
+        storeId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        price:
+          type: number
+          format: decimal
+          minimum: 0
+        checked:
+          type: boolean
+    ListItemResponse:
+      type: object
+      required: [id, productId, storeId, quantity, price, checked]
+      properties:
+        id:
+          type: integer
+        productId:
+          type: string
+        storeId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        price:
+          type: number
+          format: decimal
+          minimum: 0
         checked:
           type: boolean
     CreateListRequest:
@@ -115,7 +143,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ListItem'
+            $ref: '#/components/schemas/ListItemRequest'
     UpdateListRequest:
       type: object
       properties:
@@ -124,7 +152,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ListItem'
+            $ref: '#/components/schemas/ListItemRequest'
     ListResponse:
       type: object
       required: [id, name, createdAt, items]
@@ -139,4 +167,4 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/ListItem'
+            $ref: '#/components/schemas/ListItemResponse'

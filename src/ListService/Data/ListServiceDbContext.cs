@@ -61,6 +61,21 @@ public class ListServiceDbContext(DbContextOptions<ListServiceDbContext> options
                 .HasColumnType("varchar")
                 .IsRequired();
 
+            entity.Property(item => item.StoreId)
+                .HasColumnName("store_id")
+                .HasColumnType("varchar")
+                .IsRequired();
+
+            entity.Property(item => item.Quantity)
+                .HasColumnName("quantity")
+                .HasColumnType("integer")
+                .HasDefaultValue(1);
+
+            entity.Property(item => item.Price)
+                .HasColumnName("price")
+                .HasColumnType("numeric(12,2)")
+                .HasDefaultValue(0m);
+
             entity.Property(item => item.Checked)
                 .HasColumnName("checked")
                 .HasDefaultValue(false);

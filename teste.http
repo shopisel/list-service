@@ -31,6 +31,6 @@ Authorization: Bearer {{tokenA.response.body.access_token}}
 {
   "name": "Lista User A",
   "items": [
-    { "productId": "prod_1", "checked": false }
+    { "productId": "prod_1", "storeId": "store_1", "quantity": 1, "price": 2.50, "checked": false }
   ]
 }
