@@ -1,24 +1,51 @@
-using ListService.Infrastructure;
-using ListService.Models;
+using ListService.Contracts;
+using ListService.Data;
+using ListService.Data.Entities;
 
 namespace ListService.Services;
 
-public class ShoppingListService : IShoppingListService
+public partial class ShoppingListService : IShoppingListService
 {
-    private readonly IShoppingListRepository _repository;
+    private readonly ListServiceDbContext _dbContext;
 
-    public ShoppingListService(IShoppingListRepository repository)
+    public ShoppingListService(ListServiceDbContext dbContext)
     {
-        _repository = repository;
+        _dbContext = dbContext;
     }
 
-    public Task<IEnumerable<ShoppingList>> GetAllShoppingListsAsync()
+    private static ListResponse MapToResponse(ShoppingListEntity entity)
     {
-        return _repository.GetAllAsync();
+        return new ListResponse(
+            entity.Id,
+            entity.Name,
+            entity.CreatedAt,
+            entity.Items
+                .OrderBy(item => item.Id)
+                .Select(item => new ListItemResponse(item.ProductId, item.Checked))
+                .ToList());
     }
 
-    public Task<ShoppingList?> GetShoppingListByIdAsync(Guid id)
+    private static List<ShoppingListItemEntity> MapItems(IEnumerable<ListItemRequest>? requestItems)
     {
-        return _repository.GetByIdAsync(id);
+        if (requestItems is null)
+        {
+            return [];
+        }
+
+        return requestItems
+            .Where(item => !string.IsNullOrWhiteSpace(item.ProductId))
+            .Select(item => new ListItemRequest(item.ProductId.Trim(), item.Checked))
+            .DistinctBy(item => item.ProductId)
+            .Select(item => new ShoppingListItemEntity
+            {
+                ProductId = item.ProductId,
+                Checked = item.Checked
+            })
+            .ToList();
+    }
+
+    private static string GenerateListId()
+    {
+        return $"list_{Guid.NewGuid():N}";
     }
 }

@@ -80,3 +80,14 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+    - name: Trigger CD no Repo de Deploy
+      # Só avisa o Render se for um push direto na main (ignora os pull requests)
+      if: github.event_name != 'pull_request'
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        # Aquele token (PAT) do GitHub que criaste no Passo 1
+        token: ${{ secrets.GH_PAT_FOR_DISPATCH }}
+        # O teu nome de utilizador e o nome do repositório de destino
+        repository: shopisel/deploy
+        # O nome do gatilho (tem de estar igualzinho ao ficheiro deploy.yml)
+        event-type: deploy-list-service
