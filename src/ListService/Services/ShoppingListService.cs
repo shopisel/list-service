@@ -21,7 +21,13 @@ public partial class ShoppingListService : IShoppingListService
             entity.CreatedAt,
             entity.Items
                 .OrderBy(item => item.Id)
-                .Select(item => new ListItemResponse(item.ProductId, item.Checked))
+                .Select(item => new ListItemResponse(
+                    item.Id,
+                    item.ProductId,
+                    item.StoreId,
+                    item.Quantity,
+                    item.Price,
+                    item.Checked))
                 .ToList());
     }
 
@@ -32,16 +38,55 @@ public partial class ShoppingListService : IShoppingListService
             return [];
         }
 
-        return requestItems
-            .Where(item => !string.IsNullOrWhiteSpace(item.ProductId))
-            .Select(item => new ListItemRequest(item.ProductId.Trim(), item.Checked))
-            .DistinctBy(item => item.ProductId)
-            .Select(item => new ShoppingListItemEntity
+        var items = new List<ShoppingListItemEntity>();
+        var seenKeys = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var item in requestItems)
+        {
+            if (string.IsNullOrWhiteSpace(item.ProductId))
             {
-                ProductId = item.ProductId,
+                throw new ArgumentException("Each item must include a non-empty productId.", "items");
+            }
+
+            if (string.IsNullOrWhiteSpace(item.StoreId))
+            {
+                throw new ArgumentException("Each item must include a non-empty storeId.", "items");
+            }
+
+            if (item.Quantity < 1)
+            {
+                throw new ArgumentException("Each item must include quantity >= 1.", "items");
+            }
+
+            if (item.Price < 0m)
+            {
+                throw new ArgumentException("Each item must include price >= 0.", "items");
+            }
+
+            if (decimal.Round(item.Price, 2) != item.Price)
+            {
+                throw new ArgumentException("Each item price must have up to 2 decimal places.", "items");
+            }
+
+            var productId = item.ProductId.Trim();
+            var storeId = item.StoreId.Trim();
+            var itemKey = $"{productId}::{storeId}";
+            if (!seenKeys.Add(itemKey))
+            {
+                continue;
+            }
+
+            items.Add(new ShoppingListItemEntity
+            {
+                ProductId = productId,
+                StoreId = storeId,
+                Quantity = item.Quantity,
+                Price = item.Price,
                 Checked = item.Checked
-            })
-            .ToList();
+            });
+        }
+
+        return items;
     }
 
     private static string GenerateListId()
