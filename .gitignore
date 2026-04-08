@@ -48,6 +48,9 @@ publish/
 # Temporary files
 *.tmp
 *.temp
+.dotnet/
+.appdata/
+*.db
 
 # Sonar
 .sonarqube/

@@ -1,0 +1,36 @@
+@Gateway = http://localhost:5051
+@Keycloak = https://keycloack-iyww.onrender.com
+@Realm = shopisel
+@ClientId = shopisel-list-api
+
+@UserA = teste2
+@PassA = Teste1234o que é que ele diz aqui
+
+### Sem token -> 401
+GET {{Gateway}}/lists
+Accept: application/json
+
+### Token User A
+# @name tokenA
+POST {{Keycloak}}/realms/{{Realm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{ClientId}}&grant_type=password&username={{UserA}}&password={{PassA}}&scope=openid
+
+### Com token -> 200
+GET {{Gateway}}/lists/list_a80ff58366ab48c08e97c57712669054
+Accept: application/json
+Authorization: Bearer {{tokenA.response.body.access_token}}
+
+### Criar lista (User A)
+# @name createA
+POST {{Gateway}}/lists
+Content-Type: application/json
+Authorization: Bearer {{tokenA.response.body.access_token}}
+
+{
+  "name": "Lista User A",
+  "items": [
+    { "productId": "prod_1", "storeId": "store_1", "quantity": 1, "price": 2.50, "checked": false }
+  ]
+}

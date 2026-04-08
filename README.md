@@ -1,4 +1,42 @@
-# Welcome to your organization's demo respository
-This code repository (or "repo") is designed to demonstrate the best GitHub has to offer with the least amount of noise.
+# List Service
 
-The repo includes an `index.html` file (so it can render a web page), two GitHub Actions workflows, and a CSS stylesheet dependency.
+The `list-service` manages shopping lists in the Shopisel ecosystem.
+
+## Responsibilities
+
+- Create new shopping lists
+- Retrieve all lists or a specific list
+- Update list metadata and items
+- Mark products as checked or unchecked
+- Delete existing lists
+
+## API Overview
+
+Main list endpoints (all require bearer token):
+
+- `GET /lists`
+- `POST /lists`
+- `GET /lists/{listId}`
+- `PUT /lists/{listId}`
+- `DELETE /lists/{listId}`
+
+## Authentication (Keycloak)
+
+The API validates JWT bearer tokens issued by Keycloak.
+
+Configuration keys:
+
+- `Keycloak:Authority` (example: `https://<keycloak-host>/realms/shopisel`)
+- `Keycloak:Audience` (expected `azp` claim, example: `shopisel-list-api`)
+- `Keycloak:RequireHttpsMetadata` (`true` in production)
+
+Each list is stored with `owner_id` using the JWT `sub` claim, and all `/lists` operations are filtered by owner.
+
+## Project Structure
+
+```text
+src/
+├── ListService/
+├── ListService.Tests/
+└── ListService.slnx
+```

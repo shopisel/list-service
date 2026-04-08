@@ -1,6 +1,67 @@
-@ListService_HostAddress = http://localhost:5051
+@ListService_HostAddress = https://list-service-9503.onrender.com
 
-GET {{ListService_HostAddress}}/weatherforecast/
+GET {{ListService_HostAddress}}/lists
 Accept: application/json
+
+###
+
+POST {{ListService_HostAddress}}/lists
+Content-Type: application/json
+
+{
+  "name": "Compras Semanais",
+  "items": []
+}
+
+###
+POST {{ListService_HostAddress}}/lists
+Content-Type: application/json
+
+{
+  "name": "Compras Semanais",
+  "items": [
+    {
+      "productId": "prod_1",
+      "storeId": "store_1",
+      "quantity": 2,
+      "price": 3.49,
+      "checked": false
+    },
+    {
+      "productId": "prod_2",
+      "storeId": "store_2",
+      "quantity": 1,
+      "price": 1.99,
+      "checked": true
+    }
+  ]
+}
+
+###
+
+GET {{ListService_HostAddress}}/lists/list_123
+Accept: application/json
+
+###
+
+PUT {{ListService_HostAddress}}/lists/list_123
+Content-Type: application/json
+
+{
+  "name": "Compras Semanais Atualizada",
+  "items": [
+    {
+      "productId": "prod_1",
+      "storeId": "store_1",
+      "quantity": 3,
+      "price": 3.19,
+      "checked": true
+    }
+  ]
+}
+
+###
+
+DELETE {{ListService_HostAddress}}/lists/list_123
 
 ###

@@ -17,35 +17,30 @@ paths:
           description: Retorna as listas com o estado de cada produto
           content:
             application/json:
-              example:
-                - id: "list_001"
-                  name: "Compras Semanais"
-                  createdAt: "2024-03-20T10:00:00Z"
-                  items:
-                    - productId: "prod_1"
-                      checked: true
-                    - productId: "prod_2"
-                      checked: false
-                - id: "list_002"
-                  name: "Compras de Festa"
-                  items: []
-                  
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListResponse'
     post:
       summary: Criar nova lista
       tags: [List]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateListRequest'
       responses:
         '201':
           description: Lista criada
           content:
             application/json:
-              example:
-                id: "list_003"
-                name: "Nova Lista"
-                items: []
+              schema:
+                $ref: '#/components/schemas/ListResponse'
 
   /lists/{listId}:
     get:
-      summary: Obter lista específica
+      summary: Obter lista especifica
       tags: [List]
       parameters:
         - name: listId
@@ -58,15 +53,10 @@ paths:
           description: Detalhes da lista
           content:
             application/json:
-              example:
-                id: "list_001"
-                name: "Compras Semanais"
-                items:
-                  - productId: "prod_1"
-                    checked: true
-                  - productId: "prod_2"
-                    checked: false
-
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+        '404':
+          description: Lista nao encontrada
     put:
       summary: Atualizar lista (nome, produtos ou estado checked)
       tags: [List]
@@ -76,35 +66,21 @@ paths:
           required: true
           schema:
             type: string
-      requestBody: # <-- O que o utilizador envia
+      requestBody:
         required: true
         content:
           application/json:
-            example:
-              name: "Compras Semanais Atualizada"
-              items:
-                - productId: "prod_1"
-                  checked: false
-                - productId: "prod_2"
-                  checked: true
-                - productId: "prod_3" # Adicionando um novo produto
-                  checked: false
+            schema:
+              $ref: '#/components/schemas/UpdateListRequest'
       responses:
         '200':
           description: Lista atualizada com sucesso
           content:
             application/json:
-              example:
-                id: "list_001"
-                name: "Compras Semanais Atualizada"
-                items:
-                  - productId: "prod_1"
-                    checked: false
-                  - productId: "prod_2"
-                    checked: true
-                  - productId: "prod_3"
-                    checked: false
-
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+        '404':
+          description: Lista nao encontrada
     delete:
       summary: Remover lista
       tags: [List]
@@ -117,3 +93,78 @@ paths:
       responses:
         '204':
           description: Lista removida
+        '404':
+          description: Lista nao encontrada
+
+components:
+  schemas:
+    ListItemRequest:
+      type: object
+      required: [productId, storeId, quantity, price, checked]
+      properties:
+        productId:
+          type: string
+        storeId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        price:
+          type: number
+          format: decimal
+          minimum: 0
+        checked:
+          type: boolean
+    ListItemResponse:
+      type: object
+      required: [id, productId, storeId, quantity, price, checked]
+      properties:
+        id:
+          type: integer
+        productId:
+          type: string
+        storeId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        price:
+          type: number
+          format: decimal
+          minimum: 0
+        checked:
+          type: boolean
+    CreateListRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListItemRequest'
+    UpdateListRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListItemRequest'
+    ListResponse:
+      type: object
+      required: [id, name, createdAt, items]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListItemResponse'
