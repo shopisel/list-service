@@ -25,6 +25,8 @@ builder.Services.AddDbContext<ListServiceDbContext>(options =>
 
 var keycloakAuthority = builder.Configuration["Keycloak:Authority"];
 var keycloakAudience = builder.Configuration["Keycloak:Audience"];
+var keycloakAuthorizedParties =
+    builder.Configuration.GetSection("Keycloak:AuthorizedParties").Get<string[]>();
 var keycloakRequireHttpsMetadata =
     builder.Configuration.GetValue("Keycloak:RequireHttpsMetadata", true);
 
@@ -33,12 +35,20 @@ if (string.IsNullOrWhiteSpace(keycloakAuthority))
     throw new InvalidOperationException("Configuration 'Keycloak:Authority' is required.");
 }
 
-if (string.IsNullOrWhiteSpace(keycloakAudience))
+if (string.IsNullOrWhiteSpace(keycloakAudience) &&
+    (keycloakAuthorizedParties is null || keycloakAuthorizedParties.Length == 0))
 {
-    throw new InvalidOperationException("Configuration 'Keycloak:Audience' is required.");
+    throw new InvalidOperationException(
+        "Configuration 'Keycloak:Audience' or 'Keycloak:AuthorizedParties' is required.");
 }
 
 var normalizedAuthority = keycloakAuthority.TrimEnd('/');
+var allowedAuthorizedParties = (keycloakAuthorizedParties is { Length: > 0 }
+        ? keycloakAuthorizedParties
+        : new[] { keycloakAudience! })
+    .Where(value => !string.IsNullOrWhiteSpace(value))
+    .Select(value => value.Trim())
+    .ToHashSet(StringComparer.Ordinal);
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,10 +72,11 @@ builder.Services
             OnTokenValidated = context =>
             {
                 var authorizedParty = context.Principal?.FindFirst("azp")?.Value;
-                if (!string.Equals(authorizedParty, keycloakAudience, StringComparison.Ordinal))
+                if (string.IsNullOrWhiteSpace(authorizedParty) ||
+                    !allowedAuthorizedParties.Contains(authorizedParty))
                 {
                     context.Fail(
-                        $"Invalid 'azp' claim. Expected '{keycloakAudience}', got '{authorizedParty ?? "<missing>"}'.");
+                        $"Invalid 'azp' claim. Expected one of '{string.Join(", ", allowedAuthorizedParties)}', got '{authorizedParty ?? "<missing>"}'.");
                 }
 
                 return Task.CompletedTask;
