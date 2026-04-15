@@ -27,7 +27,8 @@ The API validates JWT bearer tokens issued by Keycloak.
 Configuration keys:
 
 - `Keycloak:Authority` (example: `https://<keycloak-host>/realms/shopisel`)
-- `Keycloak:Audience` (expected `azp` claim, example: `shopisel-list-api`)
+- `Keycloak:Audience` (legacy single expected `azp` claim, example: `shopisel-list-api`)
+- `Keycloak:AuthorizedParties` (preferred list of accepted `azp` values, for example `shopisel-list-api`, `shopisel-web`, `shopisel-mobile`)
 - `Keycloak:RequireHttpsMetadata` (`true` in production)
 
 Each list is stored with `owner_id` using the JWT `sub` claim, and all `/lists` operations are filtered by owner.
