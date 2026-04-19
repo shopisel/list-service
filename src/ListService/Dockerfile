@@ -9,8 +9,9 @@ COPY ListService.Tests/ListService.Tests.csproj ListService.Tests/
 
 RUN dotnet restore
 
-# Copiar todo o código e publicar
-COPY . .
+# Copiar apenas o código necessário para publicar
+COPY ListService/ ListService/
+COPY ListService.Tests/ ListService.Tests/
 RUN dotnet publish ListService/ListService.csproj -c Release -o /app/publish
 
 # ── Stage 2: Runtime ───────────────────────────────────────────────────────────
@@ -20,5 +21,7 @@ WORKDIR /app
 EXPOSE 8080
 
 COPY --from=build /app/publish .
+
+USER app
 
 ENTRYPOINT ["dotnet", "ListService.dll"]

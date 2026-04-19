@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+**/TestResults/
+**/*.log
+**/*.user
+**/*.suo
+**/*.userosscache
+**/*.sln.docstates
+**/.vs/
+**/.idea/
+**/*.tmp
+**/*.temp
+**/*.db
