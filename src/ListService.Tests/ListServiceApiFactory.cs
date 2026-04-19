@@ -23,6 +23,7 @@ public sealed class ListServiceApiFactory : WebApplicationFactory<Program>
         {
             configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
+                ["ConnectionStrings:ListService"] = "Host=localhost;Port=5432;Database=list-service-tests",
                 ["Keycloak:Authority"] = "https://keycloak.test/realms/shopisel",
                 ["Keycloak:Audience"] = "shopisel-list-api",
                 ["Keycloak:RequireHttpsMetadata"] = "false"
