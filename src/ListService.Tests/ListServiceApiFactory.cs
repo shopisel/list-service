@@ -17,13 +17,19 @@ public sealed class ListServiceApiFactory : WebApplicationFactory<Program>
         Path.GetTempPath(),
         $"list-service-tests-{Guid.NewGuid():N}.db");
 
+    public ListServiceApiFactory()
+    {
+        Environment.SetEnvironmentVariable(
+            "ConnectionStrings__ListService",
+            "Host=localhost;Port=5432;Database=list-service-tests");
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration((_, configBuilder) =>
         {
             configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:ListService"] = "Host=localhost;Port=5432;Database=list-service-tests",
                 ["Keycloak:Authority"] = "https://keycloak.test/realms/shopisel",
                 ["Keycloak:Audience"] = "shopisel-list-api",
                 ["Keycloak:RequireHttpsMetadata"] = "false"
