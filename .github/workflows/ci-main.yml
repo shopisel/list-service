@@ -40,7 +40,8 @@ jobs:
           /o:"shopisel" \
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.opencover.xml"
+          /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml" \
+          /d:sonar.coverage.exclusions="**/Data/Migrations/**,**/Program.cs,**/Data/Entities/**"
 
     - name: Build
       run: dotnet build --no-restore
@@ -51,6 +52,9 @@ jobs:
           /p:CollectCoverage=true \
           /p:CoverletOutput=./TestResults/coverage.opencover.xml \
           /p:CoverletOutputFormat=opencover
+
+    - name: List coverage reports
+      run: find . -type f -name "coverage.opencover.xml" -print
 
     - name: End SonarCloud analysis
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
