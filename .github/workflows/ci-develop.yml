@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -35,17 +37,18 @@ jobs:
           /o:"shopisel" \
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cs.cobertura.reportsPaths="**/coverage.cobertura.xml" \
-          /d:sonar.coverage.exclusions="**/Data/Migrations/**,**/Program.cs,**/Data/Entities/**"
+          /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
+          /d:sonar.coverage.exclusions="**/Data/Migrations/**,**/Program.cs,**/Data/Entities/**" \
+          /d:sonar.qualitygate.wait=true
 
     - name: Build
       run: dotnet build --no-restore
 
     - name: Test with coverage
-      run: dotnet test --collect:"XPlat Code Coverage"
+      run: dotnet test --collect:"XPlat Code Coverage;Format=opencover"
 
     - name: List coverage reports
-      run: find . -type f -name "coverage.cobertura.xml" -print
+      run: find . -type f -name "coverage.opencover.xml" -print
 
     - name: End SonarCloud analysis
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

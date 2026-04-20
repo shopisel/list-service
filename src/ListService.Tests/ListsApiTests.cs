@@ -94,6 +94,44 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
         Assert.Equal(HttpStatusCode.NotFound, otherUserDeleteResponse.StatusCode);
     }
 
+    [Fact]
+    public async Task GetAll_ReturnsOnlyListsFromAuthenticatedUser()
+    {
+        var createRequest = new
+        {
+            name = "Lista Utilizador Atual",
+            items = new[]
+            {
+                new { productId = "prod_20", storeId = "store_20", quantity = 1, price = 5.00m, @checked = false }
+            }
+        };
+
+        var createResponse = await _client.PostAsJsonAsync("/lists", createRequest);
+        Assert.Equal(HttpStatusCode.Created, createResponse.StatusCode);
+
+        using var otherUserClient = factory.CreateClient();
+        otherUserClient.DefaultRequestHeaders.Remove("X-Test-User");
+        otherUserClient.DefaultRequestHeaders.Add("X-Test-User", "other-user");
+
+        var otherUserCreateResponse = await otherUserClient.PostAsJsonAsync("/lists", new
+        {
+            name = "Lista Outro Utilizador",
+            items = new[]
+            {
+                new { productId = "prod_30", storeId = "store_30", quantity = 2, price = 3.25m, @checked = false }
+            }
+        });
+        Assert.Equal(HttpStatusCode.Created, otherUserCreateResponse.StatusCode);
+
+        var getAllResponse = await _client.GetAsync("/lists");
+        Assert.Equal(HttpStatusCode.OK, getAllResponse.StatusCode);
+
+        var lists = await getAllResponse.Content.ReadFromJsonAsync<List<ListResponse>>();
+        Assert.NotNull(lists);
+        Assert.Contains(lists!, list => list.Name == "Lista Utilizador Atual");
+        Assert.DoesNotContain(lists!, list => list.Name == "Lista Outro Utilizador");
+    }
+
     private sealed record ListItemResponse(int Id, string ProductId, string StoreId, int Quantity, decimal Price, bool Checked);
 
     private sealed record ListResponse(
