@@ -15,8 +15,8 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
             name = "Compras Semanais",
             items = new[]
             {
-                new { productId = "prod_1", storeId = "store_1", quantity = 2, price = 3.49m, @checked = false },
-                new { productId = "prod_2", storeId = "store_2", quantity = 1, price = 1.99m, @checked = true }
+                new { productId = "prod_1", storeId = "store_1", quantity = 2, @checked = false },
+                new { productId = "prod_2", storeId = "store_2", quantity = 1, @checked = true }
             }
         };
 
@@ -41,7 +41,7 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
             name = "Compras Semanais Atualizada",
             items = new[]
             {
-                new { productId = "prod_3", storeId = "store_3", quantity = 4, price = 2.79m, @checked = false }
+                new { productId = "prod_3", storeId = "store_3", quantity = 4, @checked = false }
             }
         };
 
@@ -55,7 +55,6 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
         Assert.Equal("prod_3", updated.Items[0].ProductId);
         Assert.Equal("store_3", updated.Items[0].StoreId);
         Assert.Equal(4, updated.Items[0].Quantity);
-        Assert.Equal(2.79m, updated.Items[0].Price);
         Assert.False(updated.Items[0].Checked);
 
         var deleteResponse = await _client.DeleteAsync($"/lists/{created.Id}");
@@ -102,7 +101,7 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
             name = "Lista Utilizador Atual",
             items = new[]
             {
-                new { productId = "prod_20", storeId = "store_20", quantity = 1, price = 5.00m, @checked = false }
+                new { productId = "prod_20", storeId = "store_20", quantity = 1, @checked = false }
             }
         };
 
@@ -118,7 +117,7 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
             name = "Lista Outro Utilizador",
             items = new[]
             {
-                new { productId = "prod_30", storeId = "store_30", quantity = 2, price = 3.25m, @checked = false }
+                new { productId = "prod_30", storeId = "store_30", quantity = 2, @checked = false }
             }
         });
         Assert.Equal(HttpStatusCode.Created, otherUserCreateResponse.StatusCode);
@@ -132,7 +131,7 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
         Assert.DoesNotContain(lists!, list => list.Name == "Lista Outro Utilizador");
     }
 
-    private sealed record ListItemResponse(int Id, string ProductId, string StoreId, int Quantity, decimal Price, bool Checked);
+    private sealed record ListItemResponse(int Id, string ProductId, string StoreId, int Quantity, bool Checked);
 
     private sealed record ListResponse(
         string Id,

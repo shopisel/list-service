@@ -26,7 +26,6 @@ public partial class ShoppingListService : IShoppingListService
                     item.ProductId,
                     item.StoreId,
                     item.Quantity,
-                    item.Price,
                     item.Checked))
                 .ToList());
     }
@@ -58,16 +57,6 @@ public partial class ShoppingListService : IShoppingListService
                 throw new ArgumentException("Each item must include quantity >= 1.", "items");
             }
 
-            if (item.Price < 0m)
-            {
-                throw new ArgumentException("Each item must include price >= 0.", "items");
-            }
-
-            if (decimal.Round(item.Price, 2) != item.Price)
-            {
-                throw new ArgumentException("Each item price must have up to 2 decimal places.", "items");
-            }
-
             var productId = item.ProductId.Trim();
             var storeId = item.StoreId.Trim();
             var itemKey = $"{productId}::{storeId}";
@@ -81,7 +70,6 @@ public partial class ShoppingListService : IShoppingListService
                 ProductId = productId,
                 StoreId = storeId,
                 Quantity = item.Quantity,
-                Price = item.Price,
                 Checked = item.Checked
             });
         }

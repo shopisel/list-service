@@ -100,7 +100,7 @@ components:
   schemas:
     ListItemRequest:
       type: object
-      required: [productId, storeId, quantity, price, checked]
+      required: [productId, storeId, quantity, checked]
       properties:
         productId:
           type: string
@@ -109,15 +109,11 @@ components:
         quantity:
           type: integer
           minimum: 1
-        price:
-          type: number
-          format: decimal
-          minimum: 0
         checked:
           type: boolean
     ListItemResponse:
       type: object
-      required: [id, productId, storeId, quantity, price, checked]
+      required: [id, productId, storeId, quantity, checked]
       properties:
         id:
           type: integer
@@ -128,10 +124,6 @@ components:
         quantity:
           type: integer
           minimum: 1
-        price:
-          type: number
-          format: decimal
-          minimum: 0
         checked:
           type: boolean
     CreateListRequest:
