@@ -71,11 +71,6 @@ public class ListServiceDbContext(DbContextOptions<ListServiceDbContext> options
                 .HasColumnType("integer")
                 .HasDefaultValue(1);
 
-            entity.Property(item => item.Price)
-                .HasColumnName("price")
-                .HasColumnType("numeric(12,2)")
-                .HasDefaultValue(0m);
-
             entity.Property(item => item.Checked)
                 .HasColumnName("checked")
                 .HasDefaultValue(false);
