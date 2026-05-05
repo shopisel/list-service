@@ -96,6 +96,18 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/health")
+    {
+        context.Response.StatusCode = StatusCodes.Status200OK;
+        await context.Response.WriteAsync("OK");
+        return;
+    }
+
+    await next();
+});
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
