@@ -37,6 +37,7 @@ public static class ListEndpoints
             }
 
             var list = await listService.GetByIdAsync(ownerId, listId, ct);
+            SetResponseVersionHeaders(httpContext, list?.Version);
             return list is null ? Results.NotFound() : Results.Ok(list);
         })
         .WithName("GetListById")
@@ -51,6 +52,7 @@ public static class ListEndpoints
             }
 
             var createdList = await listService.CreateAsync(ownerId, request, ct);
+            SetResponseVersionHeaders(httpContext, createdList.Version);
             return Results.Created($"/lists/{createdList.Id}", createdList);
         })
         .WithName("CreateList")
@@ -64,7 +66,16 @@ public static class ListEndpoints
                 return Results.Unauthorized();
             }
 
-            var updatedList = await listService.UpdateAsync(ownerId, listId, request, ct);
+            if (!TryGetIfMatchVersion(httpContext, out var expectedVersion, out var errorResult))
+            {
+                return errorResult!;
+            }
+
+            var updatedList = await listService.UpdateAsync(ownerId, listId, expectedVersion, request, ct);
+            if (updatedList is not null)
+            {
+                SetResponseVersionHeaders(httpContext, updatedList.Version);
+            }
             return updatedList is null ? Results.NotFound() : Results.Ok(updatedList);
         })
         .WithName("UpdateList")
@@ -78,7 +89,12 @@ public static class ListEndpoints
                 return Results.Unauthorized();
             }
 
-            var success = await listService.DeleteAsync(ownerId, listId, ct);
+            if (!TryGetIfMatchVersion(httpContext, out var expectedVersion, out var errorResult))
+            {
+                return errorResult!;
+            }
+
+            var success = await listService.DeleteAsync(ownerId, listId, expectedVersion, ct);
             return success ? Results.NoContent() : Results.NotFound();
         })
         .WithName("DeleteList")
@@ -88,6 +104,49 @@ public static class ListEndpoints
         {
             // "sub" may be remapped in some JWT handlers/environments.
             return principal.FindFirst("sub")?.Value;
+        }
+
+        static bool TryGetIfMatchVersion(HttpContext httpContext, out Guid expectedVersion, out IResult? errorResult)
+        {
+            expectedVersion = default;
+            errorResult = null;
+
+            var header = httpContext.Request.Headers.IfMatch.ToString();
+            if (string.IsNullOrWhiteSpace(header))
+            {
+                errorResult = Results.Problem(
+                    statusCode: StatusCodes.Status428PreconditionRequired,
+                    title: "Missing If-Match header.");
+                return false;
+            }
+
+            var candidate = header.Trim();
+            if (candidate.StartsWith("W/", StringComparison.OrdinalIgnoreCase))
+            {
+                candidate = candidate[2..].Trim();
+            }
+
+            candidate = candidate.Trim('"');
+            if (!Guid.TryParse(candidate, out expectedVersion))
+            {
+                errorResult = Results.Problem(
+                    statusCode: StatusCodes.Status400BadRequest,
+                    title: "Invalid If-Match header.");
+                return false;
+            }
+
+            return true;
+        }
+
+        static void SetResponseVersionHeaders(HttpContext httpContext, Guid? version)
+        {
+            if (version is null || version == Guid.Empty)
+            {
+                return;
+            }
+
+            httpContext.Response.Headers.ETag = $"\"{version.Value:D}\"";
+            httpContext.Response.Headers.CacheControl = "no-store";
         }
     }
 }

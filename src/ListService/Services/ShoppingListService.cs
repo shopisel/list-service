@@ -19,6 +19,7 @@ public partial class ShoppingListService : IShoppingListService
             entity.Id,
             entity.Name,
             entity.CreatedAt,
+            entity.Version,
             entity.Items
                 .OrderBy(item => item.Id)
                 .Select(item => new ListItemResponse(

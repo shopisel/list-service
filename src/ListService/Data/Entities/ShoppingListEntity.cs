@@ -10,5 +10,7 @@ public class ShoppingListEntity
 
     public DateTime CreatedAt { get; set; }
 
+    public Guid Version { get; set; }
+
     public List<ShoppingListItemEntity> Items { get; set; } = [];
 }

@@ -8,6 +8,7 @@ public partial class ShoppingListService
     public async Task<ListResponse?> UpdateAsync(
         string ownerId,
         string id,
+        Guid expectedVersion,
         UpdateListRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -19,6 +20,8 @@ public partial class ShoppingListService
         {
             return null; // Not found
         }
+
+        _dbContext.Entry(shoppingList).Property(list => list.Version).OriginalValue = expectedVersion;
 
         if (request.Name is not null)
         {
@@ -36,6 +39,7 @@ public partial class ShoppingListService
             shoppingList.Items = MapItems(request.Items);
         }
 
+        shoppingList.Version = Guid.NewGuid();
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return MapToResponse(shoppingList);
