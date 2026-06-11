@@ -21,7 +21,7 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=ListService.Tests
 RunAnalyzers=
 RunAnalyzersDuringLiveAnalysis=
-SolutionPath=<PATH>../ListService.slnx
+SolutionPath=*Undefined*
 TargetFrameworkIdentifier=.NETCoreApp
 TargetPath=<PATH>bin/Debug/net10.0/ListService.Tests.dll
 TargetRefPath=<PATH>obj/Debug/net10.0/ref/ListService.Tests.dll
@@ -64,7 +64,8 @@ obj/Debug/net10.0/
 TestAuthHandler.cs
 
 [metadataReferences]
-../../../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/10.0.3/ref/net10.0/
+../ListService/obj/Debug/net10.0/ref/ListService.dll
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.3/ref/net10.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
  Microsoft.AspNetCore.Authentication.BearerToken.dll
@@ -175,7 +176,7 @@ TestAuthHandler.cs
  System.Formats.Cbor.dll
  System.Security.Cryptography.Xml.dll
  System.Threading.RateLimiting.dll
-../../../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.3/ref/net10.0/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.3/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -343,7 +344,6 @@ TestAuthHandler.cs
  System.Xml.XPath.dll
  System.Xml.XPath.XDocument.dll
  WindowsBase.dll
-../ListService/obj/Debug/net10.0/ref/ListService.dll
 <NUGET>/
  microsoft.aspnetcore.authentication.jwtbearer/10.0.5/lib/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
  microsoft.aspnetcore.mvc.testing/10.0.5/lib/net10.0/Microsoft.AspNetCore.Mvc.Testing.dll
@@ -415,20 +415,20 @@ TestAuthHandler.cs
  xunit.extensibility.execution/2.9.3/lib/netstandard1.1/xunit.execution.dotnet.dll
 
 [analyzerReferences]
-../../../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/10.0.3/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.3/analyzers/dotnet/cs/
  Microsoft.AspNetCore.App.Analyzers.dll
  Microsoft.AspNetCore.App.CodeFixes.dll
  Microsoft.AspNetCore.App.SourceGenerators.dll
  Microsoft.AspNetCore.Components.Analyzers.dll
  Microsoft.Extensions.Validation.ValidationsGenerator.dll
-../../../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.3/analyzers/dotnet/cs/
+<DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.3/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
  Microsoft.Interop.SourceGeneration.dll
  System.Text.Json.SourceGeneration.dll
  System.Text.RegularExpressions.Generator.dll
-../../../../../Program Files/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/
+<DOTNET>/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/
  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
  Microsoft.CodeAnalysis.NetAnalyzers.dll
 <NUGET>/
@@ -441,5 +441,5 @@ TestAuthHandler.cs
   xunit.analyzers.fixes.dll
 
 [analyzerConfigFiles]
-../../../../../Program Files/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
+<DOTNET>/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
 obj/Debug/net10.0/ListService.Tests.GeneratedMSBuildEditorConfig.editorconfig

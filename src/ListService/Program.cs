@@ -1,5 +1,6 @@
 using ListService.Data;
 using ListService.Endpoints;
+using ListService.Middleware;
 using ListService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +96,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseMiddleware<ApiExceptionHandlingMiddleware>();
 
 app.Use(async (context, next) =>
 {

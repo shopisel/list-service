@@ -44,48 +44,28 @@ public static class ListEndpoints
 
         lists.MapPost(string.Empty, async ([FromBody] CreateListRequest request, IShoppingListService listService, HttpContext httpContext, CancellationToken ct) =>
         {
-            try
+            var ownerId = GetOwnerId(httpContext.User);
+            if (ownerId is null)
             {
-                var ownerId = GetOwnerId(httpContext.User);
-                if (ownerId is null)
-                {
-                    return Results.Unauthorized();
-                }
+                return Results.Unauthorized();
+            }
 
-                var createdList = await listService.CreateAsync(ownerId, request, ct);
-                return Results.Created($"/lists/{createdList.Id}", createdList);
-            }
-            catch (ArgumentException ex)
-            {
-                return Results.ValidationProblem(new Dictionary<string, string[]>
-                {
-                    [ex.ParamName ?? "error"] = [ex.Message]
-                });
-            }
+            var createdList = await listService.CreateAsync(ownerId, request, ct);
+            return Results.Created($"/lists/{createdList.Id}", createdList);
         })
         .WithName("CreateList")
         .WithSummary("Criar nova lista");
 
         lists.MapPut("/{listId}", async (string listId, [FromBody] UpdateListRequest request, IShoppingListService listService, HttpContext httpContext, CancellationToken ct) =>
         {
-            try
+            var ownerId = GetOwnerId(httpContext.User);
+            if (ownerId is null)
             {
-                var ownerId = GetOwnerId(httpContext.User);
-                if (ownerId is null)
-                {
-                    return Results.Unauthorized();
-                }
+                return Results.Unauthorized();
+            }
 
-                var updatedList = await listService.UpdateAsync(ownerId, listId, request, ct);
-                return updatedList is null ? Results.NotFound() : Results.Ok(updatedList);
-            }
-            catch (ArgumentException ex)
-            {
-                return Results.ValidationProblem(new Dictionary<string, string[]>
-                {
-                    [ex.ParamName ?? "error"] = [ex.Message]
-                });
-            }
+            var updatedList = await listService.UpdateAsync(ownerId, listId, request, ct);
+            return updatedList is null ? Results.NotFound() : Results.Ok(updatedList);
         })
         .WithName("UpdateList")
         .WithSummary("Atualizar lista");
