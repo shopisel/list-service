@@ -1,5 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace ListService.Tests;
 
@@ -129,6 +131,99 @@ public class ListsApiTests(ListServiceApiFactory factory) : IClassFixture<ListSe
         Assert.NotNull(lists);
         Assert.Contains(lists!, list => list.Name == "Lista Utilizador Atual");
         Assert.DoesNotContain(lists!, list => list.Name == "Lista Outro Utilizador");
+    }
+
+    [Fact]
+    public async Task Create_WithInvalidName_ReturnsValidationProblem()
+    {
+        var response = await _client.PostAsJsonAsync("/lists", new
+        {
+            name = "   ",
+            items = Array.Empty<object>()
+        });
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+        Assert.True(payload.RootElement.TryGetProperty("errors", out var errors));
+        Assert.True(errors.TryGetProperty("request", out var nameErrors));
+        Assert.Contains("The list name is required.", nameErrors[0].GetString());
+    }
+
+    [Fact]
+    public async Task Create_WithInvalidItemQuantity_ReturnsValidationProblem()
+    {
+        var response = await _client.PostAsJsonAsync("/lists", new
+        {
+            name = "Lista com erro",
+            items = new[]
+            {
+                new { productId = "prod_1", storeId = "store_1", quantity = 0, @checked = false }
+            }
+        });
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+        Assert.True(payload.RootElement.TryGetProperty("errors", out var errors));
+        Assert.True(errors.TryGetProperty("items", out var itemErrors));
+        Assert.Contains("quantity >= 1", itemErrors[0].GetString());
+    }
+
+    [Fact]
+    public async Task Update_WithInvalidName_ReturnsValidationProblem()
+    {
+        var createResponse = await _client.PostAsJsonAsync("/lists", new
+        {
+            name = "Lista Base",
+            items = Array.Empty<object>()
+        });
+
+        Assert.Equal(HttpStatusCode.Created, createResponse.StatusCode);
+
+        var created = await createResponse.Content.ReadFromJsonAsync<ListResponse>();
+        Assert.NotNull(created);
+
+        var response = await _client.PutAsJsonAsync($"/lists/{created!.Id}", new
+        {
+            name = " ",
+            items = Array.Empty<object>()
+        });
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+        Assert.True(payload.RootElement.TryGetProperty("errors", out var errors));
+        Assert.True(errors.TryGetProperty("request", out var nameErrors));
+        Assert.Contains("The list name cannot be empty.", nameErrors[0].GetString());
+    }
+
+    [Fact]
+    public async Task UnexpectedException_IsConvertedToProblemDetails()
+    {
+        using var factory = new FaultyListServiceApiFactory();
+        using var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/lists");
+
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
+
+        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+        Assert.Equal("An unexpected error occurred.", payload.RootElement.GetProperty("title").GetString());
+    }
+
+    [Fact]
+    public async Task InvalidJsonBody_ReturnsBadRequestProblemDetails()
+    {
+        var request = new StringContent("{ invalid json", Encoding.UTF8, "application/json");
+
+        var response = await _client.PostAsync("/lists", request);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var payload = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+        Assert.Equal("The request body is invalid.", payload.RootElement.GetProperty("title").GetString());
     }
 
     private sealed record ListItemResponse(int Id, string ProductId, string StoreId, int Quantity, bool Checked);
