@@ -32,6 +32,10 @@ namespace ListService.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
+                    b.Property<Guid>("Version")
+                        .HasColumnType("uuid")
+                        .HasColumnName("version");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar")

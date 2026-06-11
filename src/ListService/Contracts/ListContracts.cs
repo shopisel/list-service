@@ -12,4 +12,5 @@ public sealed record ListResponse(
     string Id,
     string Name,
     DateTime CreatedAt,
+    Guid Version,
     IReadOnlyList<ListItemResponse> Items);

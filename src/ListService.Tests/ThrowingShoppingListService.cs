@@ -20,12 +20,12 @@ public sealed class ThrowingShoppingListService : IShoppingListService
         throw new InvalidOperationException("Simulated failure.");
     }
 
-    public Task<ListResponse?> UpdateAsync(string ownerId, string id, UpdateListRequest request, CancellationToken cancellationToken = default)
+    public Task<ListResponse?> UpdateAsync(string ownerId, string id, Guid expectedVersion, UpdateListRequest request, CancellationToken cancellationToken = default)
     {
         throw new InvalidOperationException("Simulated failure.");
     }
 
-    public Task<bool> DeleteAsync(string ownerId, string id, CancellationToken cancellationToken = default)
+    public Task<bool> DeleteAsync(string ownerId, string id, Guid expectedVersion, CancellationToken cancellationToken = default)
     {
         throw new InvalidOperationException("Simulated failure.");
     }

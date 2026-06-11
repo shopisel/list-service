@@ -21,6 +21,7 @@ public partial class ShoppingListService
             OwnerId = ownerId,
             Name = request.Name.Trim(),
             CreatedAt = DateTime.UtcNow,
+            Version = Guid.NewGuid(),
             Items = MapItems(request.Items)
         };
 

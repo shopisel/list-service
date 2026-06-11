@@ -33,6 +33,11 @@ public class ListServiceDbContext(DbContextOptions<ListServiceDbContext> options
                 .HasColumnName("created_at")
                 .HasColumnType("timestamp with time zone");
 
+            entity.Property(list => list.Version)
+                .HasColumnName("version")
+                .IsRequired()
+                .IsConcurrencyToken();
+
             entity.HasMany(list => list.Items)
                 .WithOne(item => item.List)
                 .HasForeignKey(item => item.ListId)
